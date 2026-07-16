@@ -8,6 +8,10 @@ interface Props {
   onSave: (data: Omit<Patient, '_id'>) => Promise<void>;
 }
 
+const inputClass =
+  'w-full border border-slate-300 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent';
+const labelClass = 'block text-sm font-medium text-slate-700 mb-1';
+
 export default function PatientFormModal({ patient, onClose, onSave }: Props) {
   const [form, setForm] = useState({
     name: '', age: '', gender: 'Male' as Patient['gender'], phone: '', address: '', notes: '',
@@ -46,40 +50,47 @@ export default function PatientFormModal({ patient, onClose, onSave }: Props) {
   return (
     // Fixed overlay + centered panel — same modal works for mobile (full-width,
     // near-full-height) and desktop (centered card) via the sizing classes below.
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+    <div className="fixed inset-0 bg-slate-900/40 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto"
+        className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto shadow-xl"
       >
-        <h2 className="text-xl font-bold text-slate-800 mb-4">
+        {/* Drag handle — mobile only, signals "this is a sheet" */}
+        <div className="sm:hidden w-10 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
+
+        <h2 className="text-xl font-bold text-slate-900 mb-4">
           {patient ? 'Edit Patient' : 'Add Patient'}
         </h2>
 
-        {error && <div className="bg-red-50 text-red-700 text-sm px-3 py-2 rounded-md mb-4">{error}</div>}
+        {error && (
+          <div className="bg-rose-50 text-rose-700 text-sm px-3 py-2 rounded-lg mb-4 ring-1 ring-rose-200">
+            {error}
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
+            <label className={labelClass}>Name</label>
             <input
               required value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Age</label>
+            <label className={labelClass}>Age</label>
             <input
               required type="number" min={0} max={130} value={form.age}
               onChange={(e) => setForm({ ...form, age: e.target.value })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Gender</label>
+            <label className={labelClass}>Gender</label>
             <select
               value={form.gender}
               onChange={(e) => setForm({ ...form, gender: e.target.value as Patient['gender'] })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             >
               <option>Male</option>
               <option>Female</option>
@@ -87,36 +98,42 @@ export default function PatientFormModal({ patient, onClose, onSave }: Props) {
             </select>
           </div>
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+            <label className={labelClass}>Phone</label>
             <input
               required value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             />
           </div>
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
+            <label className={labelClass}>Address</label>
             <input
               value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             />
           </div>
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+            <label className={labelClass}>Notes</label>
             <textarea
               value={form.notes} rows={2}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              className="w-full border border-slate-300 rounded-md px-3 py-2 text-base"
+              className={inputClass}
             />
           </div>
         </div>
 
         <div className="flex gap-3 mt-4">
-          <button type="button" onClick={onClose} className="flex-1 border border-slate-300 rounded-md py-2.5 font-medium text-slate-700">
+          <button
+            type="button" onClick={onClose}
+            className="flex-1 border border-slate-300 rounded-lg py-2.5 font-medium text-slate-700 hover:bg-slate-50 transition"
+          >
             Cancel
           </button>
-          <button type="submit" disabled={saving} className="flex-1 bg-teal-700 text-white rounded-md py-2.5 font-medium disabled:opacity-50">
+          <button
+            type="submit" disabled={saving}
+            className="flex-1 bg-teal-700 text-white rounded-lg py-2.5 font-medium disabled:opacity-50 hover:bg-teal-800 transition"
+          >
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
