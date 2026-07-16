@@ -5,6 +5,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const patientRoutes = require('./src/routes/patientRoutes');
 const appointmentRoutes = require('./src/routes/appointmentRoutes');
 
+
 const app = express();
  
 app.use(express.json()); // for parsing application/json

@@ -49,5 +49,44 @@ async function createAppointment(req, res) {
 
   res.status(201).json({ appointment });
 }
+// GET /api/appointments/mine?date=YYYY-MM-DD
+// Doctor-only. Always scoped to req.user - never trusts a client-supplied doctorId.
+async function myAppointments(req, res) {
+  const { date } = req.query;
 
-module.exports = { createAppointment, findConflictingAppointment };
+  const dayStart = date ? new Date(date) : new Date();
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setDate(dayEnd.getDate() + 1);
+
+  const appointments = await Appointment.find({
+    doctor: req.user._id, // <-- from the verified token, not req.query or req.body
+    startTime: { $gte: dayStart, $lt: dayEnd },
+  })
+    .populate('patient', 'name phone age gender notes')
+    .sort({ startTime: 1 });
+
+  res.json({ appointments });
+}
+
+// PATCH /api/appointments/:id/status
+async function updateAppointmentStatus(req, res) {
+  const { status, consultationNote } = req.body;
+
+  const appointment = await Appointment.findById(req.params.id);
+  if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
+
+  // A doctor may only update their OWN appointments — checked explicitly,
+  // not just implied by the route being doctor-only.
+  if (String(appointment.doctor) !== String(req.user._id)) {
+    return res.status(403).json({ message: 'You can only update your own appointments' });
+  }
+
+  if (status) appointment.status = status;
+  if (consultationNote !== undefined) appointment.consultationNote = consultationNote;
+  await appointment.save();
+
+  res.json({ appointment });
+}
+
+module.exports = { createAppointment, myAppointments, updateAppointmentStatus };
