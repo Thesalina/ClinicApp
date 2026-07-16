@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoutes';
 import Login from './pages/Login';
 import Patients from './pages/Patients';
 import DoctorDashboard from './pages/DoctorDashboard';
+import Appointments from './pages/Appointments';
 
 // Decides where "/" sends a visitor based on auth state — avoids a
 // dead route at the root of the app.
@@ -24,10 +25,23 @@ function App() {
             path="/patients"
             element={
               <ProtectedRoute allowedRoles={['receptionist']}>
+                
                 <Patients />
+                
               </ProtectedRoute>
             }
+            
           />
+      
+          <Route
+  path="/appointments"
+  element={
+    <ProtectedRoute allowedRoles={['receptionist']}>
+      <Appointments />
+    </ProtectedRoute>
+  }
+/>
+
 
           <Route
             path="/doctor"

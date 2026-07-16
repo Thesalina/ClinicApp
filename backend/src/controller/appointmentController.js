@@ -88,5 +88,27 @@ async function updateAppointmentStatus(req, res) {
 
   res.json({ appointment });
 }
+// GET /api/appointments?date=&doctorId=&status=
+async function listAppointments(req, res) {
+  const { date, doctorId, status } = req.query;
 
-module.exports = { createAppointment, myAppointments, updateAppointmentStatus };
+  const query = {};
+  if (doctorId) query.doctor = doctorId;
+  if (status) query.status = status;
+  if (date) {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+    query.startTime = { $gte: dayStart, $lt: dayEnd };
+  }
+
+  const appointments = await Appointment.find(query)
+    .populate('patient', 'name phone')
+    .populate('doctor', 'name specialization')
+    .sort({ startTime: 1 });
+
+  res.json({ appointments });
+}
+
+module.exports = { createAppointment, myAppointments, updateAppointmentStatus, listAppointments };
