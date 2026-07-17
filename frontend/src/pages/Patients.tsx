@@ -3,7 +3,6 @@ import type { Patient } from '../types';
 import { getPatients, createPatient, updatePatient, deletePatient } from '../api/patients';
 import PatientFormModal from '../components/PatientFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
-import { useAuth } from '../context/AuthContext';
 import ReceptionistNav from '../components/ReceptionistNav';
 
 function initials(name?: string) {
@@ -18,7 +17,6 @@ export default function Patients() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Patient | null>(null);
-  const {user, logout} = useAuth();
 
   const loadPatients = useCallback(async () => {
     setLoading(true);
