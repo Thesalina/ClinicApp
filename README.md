@@ -119,4 +119,4 @@ I used Claude (Anthropic) throughout this project as a build partner — it walk
 - Made the assumptions documented above and decided the UI/UX direction
 
 I can walk through and modify any part of this codebase live, including explaining why the conflict check uses strict inequalities, why doctor ID is read from the JWT rather than the request, and the tradeoffs behind each design decision above.
->>>>>>> be34833cae1b2c9f1bbe4c197797bcc8ba0a58f6
+
