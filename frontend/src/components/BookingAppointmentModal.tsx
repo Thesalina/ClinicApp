@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { getPatients } from '../api/patients';
 import { getDoctors } from '../api/doctors';
-import type { Doctor } from '../api/doctor';
+import type { Doctor } from '../api/doctors';
 import { bookAppointment } from '../api/appointments';
 import type { Patient } from '../types';
 
@@ -28,7 +28,6 @@ export default function BookAppointmentModal({ onClose, onBooked }: Props) {
   const [isConflict, setIsConflict] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Load dropdown data once when the modal opens.
   useEffect(() => {
     getPatients('').then(setPatients);
     getDoctors().then(setDoctors);
@@ -40,7 +39,6 @@ export default function BookAppointmentModal({ onClose, onBooked }: Props) {
     setIsConflict(false);
     setSaving(true);
     try {
-      // Combine date + time into a single ISO string the backend expects.
       const startTime = new Date(`${date}T${time}`).toISOString();
       await bookAppointment({ patientId, doctorId, startTime, durationMinutes: duration, reason });
       onBooked();
@@ -60,7 +58,6 @@ export default function BookAppointmentModal({ onClose, onBooked }: Props) {
         onSubmit={handleSubmit}
         className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto shadow-xl"
       >
-        {/* Drag handle — mobile only, signals "this is a sheet" */}
         <div className="sm:hidden w-10 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
 
         <h2 className="text-xl font-bold text-slate-900 mb-4">Book Appointment</h2>

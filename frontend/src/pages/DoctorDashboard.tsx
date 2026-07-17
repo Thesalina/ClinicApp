@@ -24,7 +24,7 @@ export default function DoctorDashboard() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getMyAppointments(); // defaults to today, per the backend
+      const data = await getMyAppointments();
       setAppointments(data);
     } finally {
       setLoading(false);
@@ -59,7 +59,6 @@ export default function DoctorDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
       <div className="bg-white border-b border-slate-200 px-4 sm:px-6 py-5">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div>
@@ -88,7 +87,6 @@ export default function DoctorDashboard() {
           </div>
         ) : (
           <>
-            {/* Stat strip */}
             <div className="grid grid-cols-3 gap-3 mb-8">
               <div className="rounded-xl bg-white border border-slate-200 px-4 py-3">
                 <p className="text-2xl font-semibold text-slate-900">{appointments.length}</p>
@@ -186,10 +184,7 @@ export default function DoctorDashboard() {
                   {done.map((a) => {
                     const patient = a.patient as Patient;
                     return (
-                      <div
-                        key={a._id}
-                        className="bg-white rounded-xl border border-slate-100 p-4"
-                      >
+                      <div key={a._id} className="bg-white rounded-xl border border-slate-100 p-4">
                         <div className="flex justify-between items-start gap-3">
                           <div className="flex items-start gap-3 min-w-0">
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-500 font-semibold text-sm">

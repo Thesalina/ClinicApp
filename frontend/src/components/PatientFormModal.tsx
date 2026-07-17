@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import type { Patient } from '../types';
 
 interface Props {
-  patient: Patient | null; // null = adding a new patient, otherwise editing this one
+  patient: Patient | null;
   onClose: () => void;
   onSave: (data: Omit<Patient, '_id'>) => Promise<void>;
 }
@@ -19,7 +19,6 @@ export default function PatientFormModal({ patient, onClose, onSave }: Props) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  // Pre-fill the form when editing an existing patient.
   useEffect(() => {
     if (patient) {
       setForm({
@@ -48,14 +47,11 @@ export default function PatientFormModal({ patient, onClose, onSave }: Props) {
   }
 
   return (
-    // Fixed overlay + centered panel — same modal works for mobile (full-width,
-    // near-full-height) and desktop (centered card) via the sizing classes below.
     <div className="fixed inset-0 bg-slate-900/40 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto shadow-xl"
       >
-        {/* Drag handle — mobile only, signals "this is a sheet" */}
         <div className="sm:hidden w-10 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
 
         <h2 className="text-xl font-bold text-slate-900 mb-4">

@@ -3,7 +3,7 @@ import ReceptionistNav from '../components/ReceptionistNav';
 import BookAppointmentModal from '../components/BookingAppointmentModal';
 import { getAppointments } from '../api/appointments';
 import { getDoctors } from '../api/doctors';
-import type { } from '../api/doctor';
+import type { Doctor } from '../api/doctors';
 import type { Appointment, Patient, User } from '../types';
 
 const statusStyles: Record<string, string> = {
@@ -79,7 +79,6 @@ export default function Appointments() {
           </div>
         )}
 
-        {/* Filters — grouped in a panel so they read as one control cluster */}
         <div className="bg-white border border-slate-200 rounded-xl p-3 mb-5 shadow-sm">
           <div className="flex flex-wrap gap-3 items-center">
             <input

@@ -17,7 +17,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
@@ -38,8 +38,9 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
       <div className="w-full max-w-4xl bg-white rounded-2xl shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
-        {/* Branding panel — hidden on mobile, shown from md breakpoint up */}
-        <div className="hidden md:flex flex-col justify-center bg-teal-900 text-white p-10">
+        <div className="hidden md:flex flex-col justify-center bg-gradient-to-br from-teal-900 via-teal-800 to-slate-900 text-white p-10 relative overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-teal-600/20 rounded-full blur-3xl" />
+
           <div className="w-11 h-11 rounded-lg bg-teal-700 flex items-center justify-center mb-6">
             <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
               <path d="M12 3v18M3 12h18" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
@@ -65,7 +66,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Form panel — always visible, full width on mobile */}
         <form onSubmit={handleSubmit} className="p-6 sm:p-10 flex flex-col justify-center">
           <h2 className="text-2xl font-bold text-slate-800 mb-1">Welcome back</h2>
           <p className="text-sm text-slate-500 mb-6">Log in with your clinic account</p>
