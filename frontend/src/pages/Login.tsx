@@ -13,11 +13,12 @@ const features = [
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
@@ -87,14 +88,35 @@ export default function Login() {
           />
 
           <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-            className="w-full border border-slate-300 rounded-md px-3 py-2.5 mb-6 text-base focus:outline-none focus:ring-2 focus:ring-teal-600"
-          />
+          <div className="relative mb-6">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              className="w-full border border-slate-300 rounded-md px-3 py-2.5 pr-11 text-base focus:outline-none focus:ring-2 focus:ring-teal-600"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? (
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
+                  <path d="M3 3l18 18M10.58 10.58a2 2 0 002.83 2.83M9.88 4.24A9.7 9.7 0 0112 4c5 0 9 4 10 8a10.6 10.6 0 01-2.16 3.19M6.6 6.6C4.6 8 3.2 9.9 2 12c1 4 5 8 10 8 1.4 0 2.73-.28 3.94-.79"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
+                  <path d="M2 12c1-4 5-8 10-8s9 4 10 8c-1 4-5 8-10 8s-9-4-10-8z"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+                </svg>
+              )}
+            </button>
+          </div>
 
           <button
             type="submit"
